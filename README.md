@@ -5,6 +5,7 @@
 *We are available to meet online on weekends from 12pm-8pm (12-2pm Saturday + Sunday), as well as from 4pm-6pm on Fridays.*  
 *Our weekly meeting will be Thursday 11am-12pm.*  
 
+We are available at xx time
 ---
 
 # Timeline: Weekly Meeting Goals  
