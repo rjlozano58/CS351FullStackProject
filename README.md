@@ -87,32 +87,36 @@ Prior to 12/05
 # Roles  
 
 **Q5:** How will your group divide your role in the Group Project?  
-
-**Example:**  
-*Mauricio - Backend, Justin - Project Lead, Claudia - Frontend.*  
+Fernando -> Frontend 
+Alex -> Backend/DBA
+Rogelio -> Frontend 
+Edgar -> Backend
 
 ---
 
 # Tech Stacks
 
 **Q6:** Which tech stacks will your group use? (Django + React or Flask + React)
-
+We will be using React + Flask
 ---
 # Full Stack Group Project Track  
 ---
 
 # Track 1: Tackling Generative AI Consequences
 **Problem 1:** 
+Artists and writers are concerned that their work is being used to train AI models without their consent, leading to issues of copyright infringement and a lack of control over their intellectual property.
 
 **Solution 1:** 
-
+Develop a React and Flask web app where creators can upload their work, flag suspected AI-generated content that may have been copied, and connect with a community for support. Features could include posting, commenting, and tagging, helping artists crowdsource info while protecting their intellectual property. 
 ---
 
 # Track 2: Technology for Public Goods 
 
 **Problem 2:**
+Students often struggle to discover study groups, events, or peers with similar interests, which limits collaboration and access to campus resources.
 
 **Solution 2:** 
+Create a platform for students to form study groups, share events, and connect through shared courses or interests. Users can create profiles, post events, and message peers, making collaboration easier and fostering a stronger campus community.  
 
 **Problem 3:** 
 
