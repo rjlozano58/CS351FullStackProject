@@ -87,17 +87,16 @@ Prior to 12/05
 # Roles  
 
 **Q5:** How will your group divide your role in the Group Project?  
-Fernando -> Frontend 
-Alex -> Backend/DBA
-Rogelio -> Frontend 
-Edgar -> Backend
+
+**Example:**  
+*Mauricio - Backend, Justin - Project Lead, Claudia - Frontend.*  
 
 ---
 
 # Tech Stacks
 
 **Q6:** Which tech stacks will your group use? (Django + React or Flask + React)
-We will be using React + Flask
+
 ---
 # Full Stack Group Project Track  
 ---
@@ -143,7 +142,15 @@ Create a platform for students to form study groups, share events, and connect t
 
 **Q1: What database are you using for your project (SQLite, PostgreSQL, noSQL, MongoDB,...), and why do you choose it?**
 
+**Answer**
+
+* Mongo for non structured data like digital media (images,videos, documents), and then a relational database like sqlite or postgres to store user data (CRUD app features) with online forum. Sqlite3 offers very easy integration with simple library like sqlite3 in python.
+
 **Q2: How will database be helpful to your project? How will you design your database to support your application features?**
+
+**Answer**
+
+* database is essential to project. It stores all user data and allows for updating of the website. Design the database with a MVP/ simple schema and then increase complexity if needed.
 
 ## Third-Party API Integration
 
@@ -151,14 +158,30 @@ Create a platform for students to form study groups, share events, and connect t
 
 **Q4: Does your API key has limitations such as rate limits or downtime? How are you going to deal with that?**
 
+**Answer**
+
 ## Authentication and Security
 
-**Q5: What authentication method will you use (e.g., username/password, OAuth, JWT)?**
+**Q5: What authentication method will you use (e.g., username/password, OAuth, JWT)?**\
+
+**Answer**
 
 **Q6: How will you store and protect sensitive user data (e.g., passwords, tokens)?**
+
+**Answer**
+
+* Encrypt personal information and passwords using built- in libraries. For tokens, we will pick strong keys and have them expire quickly to mitigate security vulnerabilities. Finally, the simplest, but most likely the most effective thing that we can do is limit others from accessing information they shouldn't be able to. Similar to the industry standard, we will use strict privilege permissions to the DB.
 
 ## Deployment
 
 **Q7: Where will you deploy your project (e.g., Heroku, AWS, Render)? How will you manage environment variables and secrets during deployment?**
 
+**Answer**
+
+* Heroku seems like a nice option for a straightforward deployment. However, we can also always run in a docker container if needed. To manage environmental variables, we will avoid committing sensitive data in code to github as we already have done in part 1 (.env). 
+
 **Q8: How will you ensure your deployment is reliable and easy to update?**
+
+**Answer**
+
+* We will ensure development is reliable and easy to update by using version control throughout the entire development process. As for deployment, we plan to thoroughly test or program as well as implement logging and monitoring of program during runtime. Finally, if needed, we can always containerize our application so that it can run cross platform with fewer dependency issues.
