@@ -88,10 +88,10 @@ Prior to 12/05
 
 **Q5:** How will your group divide your role in the Group Project?  
 
-Fernando -> Frontend 
-Alex -> Backend/DBA
-Rogelio -> Frontend 
-Edgar -> Backend
+* Fernando -> Frontend 
+* Alex -> Backend/DBA
+* Rogelio -> Frontend 
+* Edgar -> Backend
 
 ---
 
@@ -99,7 +99,9 @@ Edgar -> Backend
 
 **Q6:** Which tech stacks will your group use? (Django + React or Flask + React)
 
-We will be using React + Flask
+**Answer**
+
+* We will be using React + Flask
 
 ---
 # Full Stack Group Project Track  
@@ -142,13 +144,12 @@ Develop a map-based storytelling app that highlights Chicago street art. Users c
 
 
 # Idea Finalization
-Track1- (1)license builder, (2)online checker if your media has been used to trained, (3)similar to nightshade but simpler
 
-If track 1, mongo db and a little pg db or sqlite(easier).
+* Possibilities: Track1- (1)license builder, (2)online checker if your media has been used to trained, (3)similar to nightshade but simpler
 
-Q1) Mongo for non structured data like digital media (images,videos, documents), and then a relational database like sqlite or postgres to store user data (CRUD app features) with online forum. Sqlite3 offers very easy integration with simple library like sqlite3 in python.
-Q2) database is essential to project. It stores all user data and allows for updating of the website. Design the database with a MVP/ simple schema and then increase complexity if needed.
+**Answer**
 
+* We will build a website/forum for artists and creatives to host/share their art to others. When uploading their art, we will 'poison' it so that if any unauthorized user tries to scrape/ pull it without permission to say, train their model... it will not work out well for them. 
 
 **From 5 project ideas you have above, please choose one of the project that you are going with for the rest of the semester. Explain why you are going with that project**
 
@@ -166,21 +167,32 @@ Q2) database is essential to project. It stores all user data and allows for upd
 
 **Answer**
 
-* database is essential to project. It stores all user data and allows for updating of the website. Design the database with a MVP/ simple schema and then increase complexity if needed.
+* A database is essential to the project. It stores all user data and allows for updating of the website. Design the database with a MVP/ simple schema and then increase complexity if needed.
 
 ## Third-Party API Integration
 
 **Q3: Which third-party API(s) will you integrate into your project? What data will you pull from the API(s), and how will you use it in your application?**
 
+**Answer**
+* We will attempt to use AWS S3 for image storing, as well as an image classifier like Google Vision. They will be used to store the data as well as metadata about the image which will be categorized and created using Google Vision. Finally, we hope to implement an alytics API that will allow for analytics about the information like the number of views, likes, comments etc.
+https://aws.amazon.com/s3/
+https://www.geeksforgeeks.org/machine-learning/how-to-use-vision-api-from-google-cloud/
+
 **Q4: Does your API key has limitations such as rate limits or downtime? How are you going to deal with that?**
 
 **Answer**
+
+* S3 scales as we use, so it may only be a monetary issue. However, there are free trials and credits which will be hard to surpass since there will be 4 of us, as we can always make new accounts. 
+* Google Vision has 1000 credits/ month for free. This might be used up quite quickly and thus we may have to find an alternative.
+* Google Analytics (might have to just use Open source api and not as cool sounding as Google) 
+https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
 
 ## Authentication and Security
 
 **Q5: What authentication method will you use (e.g., username/password, OAuth, JWT)?**\
 
-**Answer**
+**Answer** 
+* We will use username/password with hashed passwords for the MVP. Ideally we hope to also implement JWT as an authentication method on the server side to authenticate users.
 
 **Q6: How will you store and protect sensitive user data (e.g., passwords, tokens)?**
 
