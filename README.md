@@ -6,7 +6,8 @@
 *Our weekly meeting will be Thursday 11am-12pm.*  
 
 **Answer**
-*We are available to meet 5 - 7 PM from Monday to Friday. We will meet weekly on Tuesdays at 5 PM.
+
+We are available to meet 5 - 7 PM from Monday to Friday. We will meet weekly on Tuesdays at 5 PM.
 
 ---
 
