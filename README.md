@@ -22,6 +22,7 @@ We are available to meet 5 - 7 PM from Monday to Friday. We will meet weekly on 
 *Prior to 4/17: Meet together weekly to target project weakpoints/bugs and possibly visit office hours to get guidance if the progress feels weak.* 
 
 **Answer**
+
 Prior to 10/23
 
     - Weekly meetings to plan project approach and outline
