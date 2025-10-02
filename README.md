@@ -143,6 +143,11 @@ Develop a map-based storytelling app that highlights Chicago street art. Users c
 
 # Idea Finalization
 Track1- (1)license builder, (2)online checker if your media has been used to trained, (3)similar to nightshade but simpler
+If track 1, mongo db and a little pg db or sqlite(easier).
+
+Q1) Mongo for non structured data like digital media (images,videos, documents), and then a relational database like sqlite or postgres to store user data (CRUD app features) with online forum. Sqlite3 offers very easy integration with simple library like sqlite3 in python.
+Q2) database is essential to project. It stores all user data and allows for updating of the website. Design the database with a MVP/ simple schema and then increase complexity if needed.
+
 
 **From 5 project ideas you have above, please choose one of the project that you are going with for the rest of the semester. Explain why you are going with that project**
 
