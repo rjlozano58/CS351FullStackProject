@@ -88,14 +88,18 @@ Prior to 12/05
 
 **Q5:** How will your group divide your role in the Group Project?  
 
-**Example:**  
-*Mauricio - Backend, Justin - Project Lead, Claudia - Frontend.*  
+Fernando -> Frontend 
+Alex -> Backend/DBA
+Rogelio -> Frontend 
+Edgar -> Backend
 
 ---
 
 # Tech Stacks
 
 **Q6:** Which tech stacks will your group use? (Django + React or Flask + React)
+
+We will be using React + Flask
 
 ---
 # Full Stack Group Project Track  
@@ -118,18 +122,23 @@ Students often struggle to discover study groups, events, or peers with similar 
 Create a platform for students to form study groups, share events, and connect through shared courses or interests. Users can create profiles, post events, and message peers, making collaboration easier and fostering a stronger campus community.  
 
 **Problem 3:** 
-
+Local community organizations often lack accessible tools to promote events or share resources, which reduces public engagement.
 **Solution 3:**  
+Extend the platform to allow community groups (e.g, neighborhood associations or cultural centers) to post events and resources. This fosters greater local participation and makes it easier for residents to discover opportunities for involvement. 
 
 # Track 3: Creative Coding and Cultural Expression
 
 **Idea - Story - Inspiration 4:**
+Inspired by global music traditions, many students at UIC may not have easy access to learning about instruments or cultural music styles outside of their background. 
 
 **Implementation 4:**
+Develop an interactive web application that allows users to explore various cultural instruments through audio samples, stories, and historical context. Users can click on instruments to hear their sounds, read about their origins, and share their own experiences.
 
 **Idea - Story - Inspiration 5:**
+Street art in Chicago reflects the diverse cultures and local identities of its residents, but it’s often underdocumented or inaccessible to broader audiences.
 
 **Implementation 5:**
+Develop a map-based storytelling app that highlights Chicago street art. Users can upload photos of murals, tag their location, and read about the cultural significance behind each piece, turning the city into an interactive gallery.
 
 
 # Idea Finalization
