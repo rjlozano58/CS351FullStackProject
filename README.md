@@ -5,7 +5,9 @@
 *We are available to meet online on weekends from 12pm-8pm (12-2pm Saturday + Sunday), as well as from 4pm-6pm on Fridays.*  
 *Our weekly meeting will be Thursday 11am-12pm.*  
 
-We are available at xx time
+**Answer**
+We are available to meet 5 - 7 PM from Monday to Friday. We will meet weekly on Tuesdays at 5 PM.
+
 ---
 
 # Timeline: Weekly Meeting Goals  
@@ -16,7 +18,24 @@ We are available at xx time
 
 *During week of 3/25: Work on the project rough draft itself to make a functioning project with data input, data structure usage, and processing into output on the frontend.*  
 
-*Prior to 4/17: Meet together weekly to target project weakpoints/bugs and possibly visit office hours to get guidance if the progress feels weak.*  
+*Prior to 4/17: Meet together weekly to target project weakpoints/bugs and possibly visit office hours to get guidance if the progress feels weak.* 
+
+**Answer**
+Prior to 10/23
+    - Weekly meetings to plan project approach and outline
+    - Create first prototype using Figma
+    - Begin agile sprint cycles leading toward a working prototype
+
+Prior to 11/20
+    - Start agile sprints the week after 10/23
+    - Incorporate peer review feedback from Milestone 3
+    - Continue iterative development and refinement of working prototype
+
+Prior to 12/05
+    - Have presentation roles established, and drafted presentation
+    - Finalize project for presentation
+    - Ensure all code is reviewed, revised, and ready for submission
+
 
 ---
 
