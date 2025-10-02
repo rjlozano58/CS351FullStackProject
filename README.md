@@ -89,7 +89,15 @@ Prior to 12/05
 **Q5:** How will your group divide your role in the Group Project?  
 
 **Example:**  
-*Mauricio - Backend, Justin - Project Lead, Claudia - Frontend.*  
+
+**Answer**
+
+* We plan divide work based on previous experience and potential comfort with one thing over the other. However, since we are in class to learn, we will each contribute not just within our role, but outside of it so that we can learn the fullstack process.
+
+Alex- backend/DBA
+Edgar- backend
+Fernando- frontend
+Rogelio- frontend
 
 ---
 
@@ -97,7 +105,9 @@ Prior to 12/05
 
 **Q6:** Which tech stacks will your group use? (Django + React or Flask + React)
 
----
+**Answer**
+* We will be using React + Flask
+
 # Full Stack Group Project Track  
 ---
 
