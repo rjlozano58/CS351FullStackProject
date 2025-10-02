@@ -142,6 +142,7 @@ Develop a map-based storytelling app that highlights Chicago street art. Users c
 
 
 # Idea Finalization
+Track1- (1)license builder, (2)online checker if your media has been used to trained, (3)similar to nightshade but simpler
 
 **From 5 project ideas you have above, please choose one of the project that you are going with for the rest of the semester. Explain why you are going with that project**
 
