@@ -26,13 +26,15 @@ We are available at xx time
 **Q3b:** What are the usernames of each group member on that platform?  
 **Q3c:** What is your group’s expected response time to messages?  
 
-**Example:**  
+**Answer**
+
 *We will use Discord for communication*  
 
 *Usernames:*  
-*Justin - ghostmechanic*  
-*Claudia - ninth.py*  
-*Mauricio - itsperi*  
+*Edgar - egadabeast*  
+*Rogelio - tyson_bruh*  
+*Fernando - fjronero99*  
+*Alex- gwheeze77*  
 *Our expected response time will be within 12 hours.*  
 
 ---
@@ -42,10 +44,11 @@ We are available at xx time
 **Q4a:** How will your group handle situations when there is conflict in your group?  
 **Q4b:** How will your group handle situations when a member is not contributing enough?  
 
-**Example:**  
-*If there is a disagreement on direction, we will resolve it with a unanimous vote.*  
-*If team members do not pull their weight, the team will politely remind them of their duties.*  
-*If they continue to not pull their weight, then they will get another warning and a chance to start being more productive.*  
+**Answer**
+
+*We will all propose our viewpoints and their respective pros and cons. The group will then come to a consensus on what approach we all agree would be the best*  
+
+*We will hold a meeting to address the shortcomings of the group member and address how we could best support them so that they could be assigned tasks that would allow them to contribute equally in comparison to the rest of the group.*  
 
 ---
 
