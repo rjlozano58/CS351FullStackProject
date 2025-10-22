@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CardDisplay } from "../components/CardDisplay";
+import HeroWithImage from "../components/HeroWithImage";
 
 function Home() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchFirestoreData = async () => {
+
       try {
+
         const res = await axios.get(
           "https://firestore.googleapis.com/v1/projects/cs-351-b2b1c/databases/(default)/documents/Stories"
         );
         setData(res.data.documents || []);
-        console.log(res.data.documents)
-
-        // Debug: Check the actual data structure
-        console.log("Full response:", res.data.documents);
         
-        // Debug: Check each document's image URL
-        res.data.documents?.forEach((doc, i) => {
-          console.log(`Doc ${i} ImageUrl:`, doc.fields?.ImageUrl?.stringValue);
-        });
       } catch (error) {
         console.error("Error fetching Firestore data:", error);
       }
@@ -31,14 +26,20 @@ function Home() {
 
   return (
     <div className="p-6">
+      
+      <HeroWithImage title="Post Your Art!" image="https://cranbrookart.edu/wp-content/uploads/2023/10/W9A2952.jpg" text="Our platform empowers artists to freely share their creative work in a secure, supportive environment. We prioritize artistic integrity by ensuring every piece remains protected from AI training, copying, or misuse. Artists can showcase their talent, connect with others, and gain visibility without compromising ownership or creative authenticity." />
+
+      <div className="divider"></div>
+
       <h1 className="text-3xl font-bold mb-6 text-center">Art Gallery</h1>
 
-      <div className="flex flex-wrap justify-center gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 justify-items-center">
         {data.map((doc, index) => {
           const fields = doc.fields || {};
           const imageURL = fields.ImageUrl?.stringValue;
           const title = fields.Title?.stringValue;
           const description = fields.Body?.stringValue;
+          const author = fields.Author_ID?.stringValue;
 
           return (
             <CardDisplay
@@ -47,6 +48,7 @@ function Home() {
             imageURL={imageURL}
             title={title}
             description={description}
+            author={author}
             />
           );
         })}

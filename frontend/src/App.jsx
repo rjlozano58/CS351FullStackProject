@@ -11,7 +11,7 @@ import PostDetails from './pages/PostDetails.jsx'
 function App() {
   return (
     <>
-      <div data-theme="light">
+      <div data-theme="dark">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
