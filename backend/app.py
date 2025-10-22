@@ -3,15 +3,20 @@ NOTE for future use there should be a secrets directory in your backend/ directo
 related things. If it is not there none of this will probably work
 """
 
+# sandard lib and class imports
 import os
 import time
+from trie import Trie
+
+# flask imports
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+# firebase imports
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
 from google.cloud.firestore_v1.query import Query
 from google.cloud.firestore_v1.base_query import FieldFilter
-from trie import Trie
 
 app = Flask(__name__)
 
