@@ -31,9 +31,8 @@ function Home() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">Stories</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Art Gallery</h1>
 
-      {/* Responsive card grid */}
       <div className="flex flex-wrap justify-center gap-6">
         {data.map((doc, index) => {
           const fields = doc.fields || {};

@@ -11,14 +11,14 @@ import PostDetails from './pages/PostDetails.jsx'
 function App() {
   return (
     <>
-      {/* <Navbar/>
-      {router} */}
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/upload" element={<Upload />} />
-        <Route path="/post/:id" element={<PostDetails />} />
-      </Routes>
+      <div data-theme="light">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/post/:id" element={<PostDetails />} />
+        </Routes>
+      </div>
     </>
     
   )
