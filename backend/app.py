@@ -91,6 +91,8 @@ def full_search():
 
     query_end = query + u'\uf8ff'
 
+    # print(f' * User query q?= "{query_end}"')
+
     results = []
     try:
         stories_ref = db_firestore.collection('Stories')
@@ -168,15 +170,92 @@ def get_all_stories():
 
 @app.route("/api/stories/<string:story_id>", methods=['GET'])
 def get_story_detail(story_id):
-    pass
+    if not db_firestore:
+        return jsonify({"error": "No query provided or DB unavailable"}), 400
+    try:
+        doc_ref = db_firestore.collection("Stories").document(story_id)
+        doc = doc_ref.get()
 
+        if not doc.exists:
+            return jsonify({"error": f"Story with ID {story_id} not found"}), 404    
+        story_data = doc.to_dict()
+        story_data["id"] = doc.id   
+        return jsonify(story_data), 200
+    
+    except Exception as e:
+        print(f"Error getting story {story_id}: {e}")
+        return jsonify({"error": "Could not get story"}), 500
+    
+
+#  getting error: curl: (56) Recv failure: Connection reset by peer
 @app.route("/api/stories/<string:story_id>", methods=['PUT'])
 def update_story(story_id):
-    pass
+    if not db_firestore:
+        return jsonify({"error": "No query provided or DB unavailable"}), 400
+
+    data = request.json
+    if not data:
+        return jsonify({"error": "No update data provided"}), 400
+    
+    doc_ref = db_firestore.collection('Stories').document(story_id)
+
+    try:
+        doc = doc_ref.get()
+
+        if not doc.exists:
+            return jsonify({"error": f"Story with ID '{story_id}' not found"}), 404
+        updates = {}
+        old_data = doc.to_dict()
+
+        # only update provided fields
+        if "title" in data:
+            updates["Title"] = data["title"]
+            updates["TitleLower"] = data["title"].lower()
+        if "body" in data:
+            updates["Body"] = data["body"]
+        if "imageUrl" in data:
+            updates["ImageUrl"] = data["imageUrl"]
+
+        if not updates:
+            return jsonify({"error": "No valid fields to update"}), 400
+        doc_ref.update(updates)
+
+        # modify Trie title with potential new title
+        # if "TitleLower" in updates:
+
+        updated_doc = doc_ref.get() 
+        updated_story = updated_doc.to_dict()
+        update_story["id"] = updated_doc.id
+
+        return jsonify(updated_story), 200
+
+    except Exception as e:
+        print(f"Error updating story {story_id}: {e}")
+        return jsonify({"error": "Could not update story"}), 500
 
 @app.route("/api/stories/<string:story_id>", methods=['DELETE'])
 def delete_story(story_id):
-    pass
+    if not db_firestore:
+        return jsonify({"error": "No query provided or DB unavailable"}), 400
+    try:
+        doc_ref = db_firestore.collection("Stories").document(story_id)
+        doc = doc_ref.get()
+
+        if not doc.exists:
+            return jsonify({"error": f"Story with ID {story_id} not found"}), 404    
+        
+        doc_ref.delete()
+
+        # remove respective title from Trie
+        title_lower = doc.to_dict().get("TitleLower")
+        if title_lower:
+            main_trie.remove(title_lower)
+
+        return jsonify({"status" : "success", "id": story_id}), 200
+    
+    except Exception as e:
+        print(f"Error deleting story {story_id}: {e}")
+        return jsonify({"error": "Could not delete story"}), 500
 
 if __name__ == "__main__":
     main_trie = build_trie_from_db()
