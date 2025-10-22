@@ -1,9 +1,15 @@
+"""
+NOTE for future use there should be a secrets directory in your backend/ directory containing the .json file for firestore
+related things. If it is not there none of this will probably work
+"""
+
 import os
 import time
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
+from google.cloud.firestore_v1.base_query import FieldFilter
 from trie import Trie
 
 app = Flask(__name__)
@@ -77,7 +83,7 @@ def autocomplete():
 
 @app.route("/api/search", methods=['GET'])
 def full_search():
-    query = request.args.get("q", "").strip().lower()
+    query = request.args.get("q", "").strip(' "').lower()
 
     if not query or not db_firestore:
         return jsonify({"error": "No query provided or DB unavailable"}), 400
