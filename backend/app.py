@@ -77,7 +77,32 @@ def autocomplete():
 
 @app.route("/api/search", methods=['GET'])
 def full_search():
-    pass
+    query = request.args.get("q", "").strip().lower()
+
+    if not query or not db_firestore:
+        return jsonify({"error": "No query provided or DB unavailable"}), 400
+
+    query_end = query + u'\uf8ff'
+
+    results = []
+    try:
+        stories_ref = db_firestore.collection('Stories')
+
+        query_obj = stories_ref.where(
+            filter=FieldFilter('TitleLower', '>=', query)
+        ).where(
+            filter=FieldFilter('TitleLower', '<=', query_end)
+        ).limit(20)
+
+        for doc in query_obj.stream():
+            results.append({"id": doc.id, **doc.to_dict()})
+
+    except Exception as e:
+        print(f"Error during Firestore search: {e}")
+        return jsonify({"error": "Search failed"}), 500
+
+    return jsonify(results)
+
 
 @app.route("/api/stories", methods=['POST'])
 def create_story():
