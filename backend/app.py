@@ -230,7 +230,7 @@ def update_story(story_id):
 
         updated_doc = doc_ref.get() 
         updated_story = updated_doc.to_dict()
-        update_story["id"] = updated_doc.id
+        updated_story["id"] = updated_doc.id
 
         return jsonify(updated_story), 200
 
