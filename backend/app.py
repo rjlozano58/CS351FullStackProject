@@ -9,6 +9,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
+from google.cloud.firestore_v1.query import Query
 from google.cloud.firestore_v1.base_query import FieldFilter
 from trie import Trie
 
@@ -112,11 +113,58 @@ def full_search():
 
 @app.route("/api/stories", methods=['POST'])
 def create_story():
-    pass
+    data = request.json
+    print(data)
+    data = request.json
+    title = data.get('title')
+    body = data.get('body')
+    image_url = data.get('imageUrl')
+    user_id = data.get('user_id')
+
+    if not title:
+        return jsonify({"Error": "Missing title"}), 400
+    
+    if not body and not image_url:
+        return jsonify({"Error": "Missing body or image URL"}), 400
+    
+    if not user_id:
+        return jsonify({"Error": "Missing user_id"}), 400
+
+    story_data = {
+        'Title': title,
+        'TitleLower': title.lower(),
+        'Body' : body,
+        'ImageUrl': image_url,
+        'Author_ID': user_id,
+        'CreatedAt': firestore.SERVER_TIMESTAMP
+    }
+
+    try:
+        doc_ref = db_firestore.collection('Stories').add(story_data)
+
+        main_trie.insert(title.lower())
+
+        print(f"Story created and added to Trie: {title}")
+
+        return jsonify({"status": "success", "id": doc_ref[1].id}), 201 
+
+    except Exception as e:
+        print(f"Error creating story: {e}")
+        return jsonify({"error": "Could not create story"}), 500
 
 @app.route("/api/stories", methods=['GET'])
 def get_all_stories():
-    pass
+    stories = []
+    try:
+        stories_ref = db_firestore.collection('Stories').order_by(
+            'CreatedAt', direction=Query.DESCENDING
+        ).limit(50)
+        for doc in stories_ref.stream():
+            stories.append({"id": doc.id, **doc.to_dict()})
+        return jsonify(stories)
+    except Exception as e:
+        print(f"Error fetching all stories: {e}")
+        return{"Error": f"Could not fetch stories {e}"}, 500
 
 @app.route("/api/stories/<string:story_id>", methods=['GET'])
 def get_story_detail(story_id):
