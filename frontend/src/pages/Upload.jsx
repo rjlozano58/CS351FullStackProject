@@ -5,7 +5,7 @@ import axios from "axios";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-const API_URL = "http://127.0.0.1:8080/api/stories";
+const API_URL = "/api/stories"; // proxy handles forwarding to port 8080
 
 function Upload() {
   const [file, setFile] = useState(null);
