@@ -300,6 +300,22 @@ def delete_story(story_id):
     except Exception as e:
         print(f"Error deleting story {story_id}: {e}")
         return jsonify({"error": "Could not delete story"}), 500
+    
+@app.route("/verify_token", methods=["POST"])
+def verify_token():
+    try:
+        token = request.headers.get("Autorization")
+        if not token:
+            return jsonify({"error": "No autentication header"}), 401
+        
+        tok = token.split("Bearer")[-1]
+        decoded = auth.verify_id_token(tok)
+        
+        uid = decoded["uid"]
+        
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 401
 
 if __name__ == "__main__":
     build_trie_from_db()
