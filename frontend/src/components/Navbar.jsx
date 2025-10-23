@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const API_URL = "http://127.0.0.1:8080";
@@ -8,6 +8,15 @@ function Navbar() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("title");
   const [suggestions, setSuggestions] = useState([]);
+  
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = () => {
+    if(query.trim()) {
+      navigate(`/search/${filter}/${query.trim()}`);
+      setSuggestions([]);
+    }
+  }
 
   useEffect(() => {
     if (query.length < 1) {
@@ -71,7 +80,7 @@ function Navbar() {
               <option value="title">Title</option>
               <option value="author">Author</option>
             </select>
-            <button className="btn join-item">Search</button>
+            <button className="btn join-item" onClick={handleSearchSubmit}>Search</button>
           </div>
 
           {suggestions.length > 0 && (

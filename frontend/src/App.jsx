@@ -4,6 +4,7 @@ import Navbar from './components/Navbar.jsx'
 import Home from './pages/Home.jsx'
 import Upload from './pages/Upload.jsx'
 import PostDetails from './pages/PostDetails.jsx'
+import SearchResults from './pages/SearchResults.jsx'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="/post/:id" element={<PostDetails />} />
+          <Route path="/search/:type/:query" element={<SearchResults />} />
         </Routes>
       </div>
     </>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { db, storage } from "../firebase";
+import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import axios from "axios";
 
 const API_URL = "http://127.0.0.1:8080/api/stories";

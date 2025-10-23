@@ -111,6 +111,7 @@ def autocomplete():
 @app.route("/api/search", methods=['GET'])
 def full_search():
     query = request.args.get("q", "").strip(' "').lower()
+    search_type = request.args.get("type", "title")
 
     if not query or not db_firestore:
         return jsonify({"error": "No query provided or DB unavailable"}), 400
@@ -123,11 +124,20 @@ def full_search():
     try:
         stories_ref = db_firestore.collection('Stories')
 
-        query_obj = stories_ref.where(
-            filter=FieldFilter('TitleLower', '>=', query)
-        ).where(
-            filter=FieldFilter('TitleLower', '<=', query_end)
-        ).limit(20)
+        if search_type == 'author':
+            print(f" searching AUTHORS for: {query}")
+            query_obj = stories_ref.where(
+                filter=FieldFilter('Author_ID_Lower', '>=', query) 
+            ).where(
+                filter=FieldFilter('Author_ID_Lower', '<=', query_end)
+            ).limit(20)
+        else:
+            print(f" Searching TITLES for: {query}")
+            query_obj = stories_ref.where(
+                filter=FieldFilter('TitleLower', '>=', query)
+            ).where(
+                filter=FieldFilter('TitleLower', '<=', query_end)
+            ).limit(20)
 
         for doc in query_obj.stream():
             results.append({"id": doc.id, **doc.to_dict()})
@@ -164,6 +174,7 @@ def create_story():
         'Body' : body,
         'ImageUrl': image_url,
         'Author_ID': user_id,
+        'Author_ID_Lower': user_id.lower(),
         'CreatedAt': firestore.SERVER_TIMESTAMP
     }
 
