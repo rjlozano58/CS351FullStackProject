@@ -1,3 +1,10 @@
+export default function Upload() {
+  return (
+    <div className="text-center mt-10">
+      <h1 className="text-3xl font-semibold">Upload Page 📤</h1>
+    </div>
+  );
+}
 import React, { useState } from "react";
 import { db, storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
