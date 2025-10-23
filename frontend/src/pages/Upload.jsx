@@ -37,15 +37,15 @@ function Upload() {
     try {
       setUploading(true);
 
-      // 1️⃣ Upload file to Firebase Storage
+      // 1️Upload file to Firebase Storage
       const storageRef = ref(storage, `uploads/${user.uid}/${Date.now()}-${file.name}`);
       await uploadBytes(storageRef, file);
 
-      // 2️⃣ Get the download URL
+      // 2️ Get the download URL
       const url = await getDownloadURL(storageRef);
       setUploadedUrl(url);
 
-      // 3️⃣ Save metadata to your backend
+      // 3️ Save metadata to your backend
       await axios.post(API_URL, {
         title: title,
         body: description,
