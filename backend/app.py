@@ -22,7 +22,8 @@ app = Flask(__name__)
 
 CORS(app)
 
-main_trie = Trie()
+title_trie = Trie()
+author_trie = Trie()
 
 # firebase setup
 try:
@@ -46,24 +47,35 @@ except Exception as e:
 
 
 def build_trie_from_db():
-    trie = Trie()
     if not db_firestore:
         print("Error: Firestore client not available!")
-        return trie
+        return
+    
+    print("Building Tries from Firestore...")
     try:
         stories_ref = db_firestore.collection('Stories')
+        title_count = 0
+        author_count = 0
 
         for doc in stories_ref.get(): 
             story_data = doc.to_dict()
+            
+            # 1. Populate Title Trie
             title = story_data.get('Title')
             if title and isinstance(title, str):
-                trie.insert(title.lower())
+                title_trie.insert(title.lower())
+                title_count += 1
+            
+            # 2. Populate Author Trie (using 'Author_ID' field)
+            author = story_data.get('Author_ID')
+            if author and isinstance(author, str):
+                author_trie.insert(author.lower())
+                author_count += 1
+
     except Exception as e:
-        print(f"ERROR building Trie from Firestore: {e}")
-        return Trie()
+        print(f"ERROR building Tries from Firestore: {e}")
     
-    print("Trie build complete")
-    return trie
+    print(f"Trie build complete. {title_count} titles, {author_count} authors.")
 
 # verify api is working fine
 @app.route("/")
@@ -78,12 +90,21 @@ def health_check():
 @app.route("/api/autocomplete", methods=['GET'])
 def autocomplete():
     query = request.args.get("q","")
+    # Get the search type, default to 'title'
+    search_type = request.args.get("type", "title") 
+    
     prefix_to_search = query.strip().lower()
 
     if not prefix_to_search:
         return jsonify([])
-        
-    results = main_trie.search_prefix(prefix_to_search)
+    
+    # Search the correct trie based on the type
+    if search_type == 'author':
+        print(f" * Autocomplete searching AUTHOR_TRIE for: {prefix_to_search}")
+        results = author_trie.search_prefix(prefix_to_search)
+    else: # Default to title
+        print(f" * Autocomplete searching TITLE_TRIE for: {prefix_to_search}")
+        results = title_trie.search_prefix(prefix_to_search)
 
     return jsonify(results)
 
@@ -149,7 +170,8 @@ def create_story():
     try:
         doc_ref = db_firestore.collection('Stories').add(story_data)
 
-        main_trie.insert(title.lower())
+        title_trie.insert(title.lower())
+        author_trie.insert(user_id.lower())
 
         print(f"Story created and added to Trie: {title}")
 
@@ -251,10 +273,16 @@ def delete_story(story_id):
         
         doc_ref.delete()
 
-        # remove respective title from Trie
-        title_lower = doc.to_dict().get("TitleLower")
+        # remove from both Tries
+        data = doc.to_dict()
+        title_lower = data.get("TitleLower")
         if title_lower:
-            main_trie.remove(title_lower)
+            title_trie.remove(title_lower)
+        
+        author_lower = data.get("Author_ID")
+        if author_lower:
+            # We must use .lower() because that's how it was stored
+            author_trie.remove(author_lower.lower())
 
         return jsonify({"status" : "success", "id": story_id}), 200
     
@@ -263,5 +291,5 @@ def delete_story(story_id):
         return jsonify({"error": "Could not delete story"}), 500
 
 if __name__ == "__main__":
-    main_trie = build_trie_from_db()
+    build_trie_from_db()
     app.run(debug=True, host="0.0.0.0", port=8080)
