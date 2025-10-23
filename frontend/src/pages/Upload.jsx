@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { db, storage } from "../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 function Upload() {
   const [file, setFile] = useState(null);
@@ -18,32 +20,22 @@ function Upload() {
     try {
       setUploading(true);
 
-      // Step 1: Upload file to an external image host (e.g., imgbb)
-      const formData = new FormData();
-      formData.append("image", file);
+      // 1️ Upload file to Firebase Storage
+      const storageRef = ref(storage, `uploads/${Date.now()}-${file.name}`);
+      await uploadBytes(storageRef, file);
 
-      const imageRes = await axios.post(
-        `https://api.imgbb.com/1/upload?key=acc21833bd732a0749632daa7fe97c97`,
-        formData
-      );
-      const imageUrl = imageRes.data.data.url;
-      setUploadedUrl(imageUrl);
+      // Get the public URL
+      const url = await getDownloadURL(storageRef);
+      setUploadedUrl(url);
 
-      // Step 2: Create a Firestore document via REST API
-      const newUpload = {
-        fields: {
-          Title: { stringValue: title },
-          Author: { stringValue: author },
-          Body: { stringValue: description },
-          ImageUrl: { stringValue: imageUrl },
-          CreatedAt: { timestampValue: new Date().toISOString() },
-        }
-      };
-
-      await axios.post(
-        `https://firestore.googleapis.com/v1/projects/cs-351-b2b1c/databases/(default)/documents/Uploads`,
-        newUpload
-      );
+      // 2️ Save document to Firestore
+      await addDoc(collection(db, "Uploads"), {
+        Title: title,
+        Author: author,
+        Body: description,
+        ImageUrl: url,
+        CreatedAt: serverTimestamp(),
+      });
 
       alert("Artwork uploaded successfully!");
       setFile(null);
@@ -51,8 +43,8 @@ function Upload() {
       setAuthor("");
       setDescription("");
     } catch (error) {
-      console.error("Upload error:", error);
-      alert("Failed to upload artwork. Try again.");
+      console.error("Upload failed:", error);
+      alert("Upload failed. See console.");
     } finally {
       setUploading(false);
     }
@@ -62,44 +54,32 @@ function Upload() {
     <div className="max-w-lg mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Upload Artwork</h1>
 
-      <div className="mb-4">
-        <label className="block mb-1 font-semibold">Title</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="input input-bordered w-full"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-1 font-semibold">Author</label>
-        <input
-          type="text"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          className="input input-bordered w-full"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-1 font-semibold">Description</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="textarea textarea-bordered w-full h-24"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-1 font-semibold">Select File</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
-          className="file-input file-input-bordered w-full"
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className="input input-bordered w-full mb-2"
+      />
+      <input
+        type="text"
+        placeholder="Author"
+        value={author}
+        onChange={(e) => setAuthor(e.target.value)}
+        className="input input-bordered w-full mb-2"
+      />
+      <textarea
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        className="textarea textarea-bordered w-full mb-2 h-24"
+      />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setFile(e.target.files[0])}
+        className="file-input file-input-bordered w-full mb-4"
+      />
 
       <button
         onClick={handleUpload}
@@ -112,7 +92,7 @@ function Upload() {
       {uploadedUrl && (
         <p className="mt-4">
           Uploaded file:{" "}
-          <a href={uploadedUrl} target="_blank" className="text-blue-500 underline">
+          <a href={uploadedUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
             View Image
           </a>
         </p>
