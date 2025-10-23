@@ -1,10 +1,3 @@
-export default function Home() {
-  return (
-    <div className="text-center mt-10">
-      <h1 className="text-3xl font-semibold">Welcome to the Home Page 🏠</h1>
-    </div>
-  );
-}
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CardDisplay } from "../components/CardDisplay";
