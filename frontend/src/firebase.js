@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -22,9 +22,6 @@ const analytics = getAnalytics(app);
 
 // Initialize Auth
 export const auth = getAuth(app);
-signInAnonymously(auth)
-  .then(() => console.log("Signed in anonymously"))
-  .catch((err) => console.error("Firebase auth error:", err));
 
 // Export Firestore and Storage
 export const db = getFirestore(app);
