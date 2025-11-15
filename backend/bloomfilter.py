@@ -7,7 +7,6 @@ and historical standard for approsimate set membership checking
 '''
 
 class BloomFilter(object):
-    
     def __init__(self, size=50000, hashCount = 3):
         self.size = size
         self.hashCount = hashCount
@@ -16,13 +15,6 @@ class BloomFilter(object):
     def add(self, item):
         for idx in [self.h_add(item), self.h_djb(item), self.h_mult(item)]:
             self.bitArr[idx] = 1
-
-        # for idx in self.h_add(item):
-        #     self.bitArr[idx] = 1
-        # for idx in self.h_djb(item):
-        #     self.bitArr[idx] = 1
-        # for idx in self.h_mult(item):
-        #     self.bitArr[idx] = 1
 
     def lookup(self, lookupVal):
         a, b, c = self.h_add(lookupVal), self.h_djb(lookupVal), self.h_mult(lookupVal)    
@@ -56,6 +48,3 @@ class BloomFilter(object):
     def h_python(self, s:str) -> int:
         return hash(s) % self.size
         
-
-if __name__ == "__main__":
-    alex = BloomFilter() 
