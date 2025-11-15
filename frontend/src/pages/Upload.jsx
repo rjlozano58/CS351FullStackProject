@@ -1,59 +1,89 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from "axios";
+import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
-const API_URL = "http://127.0.0.1:8080/api/stories";
+const API_URL = "/api/stories"; // proxy handles forwarding to port 8080
 
 function Upload() {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploadedUrl, setUploadedUrl] = useState("");
+  const [user, setUser] = useState(null);
+
+  // Watch auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return unsubscribe;
+  }, []);
 
   const handleUpload = async () => {
-    if (!file || !title || !author) {
-      alert("Please provide a file, title, and author.");
+    if (!user) {
+      alert("Please log in to upload artwork.");
+      return;
+    }
+
+    if (!file || !title.trim()) {
+      alert("Please provide a title and select a file.");
       return;
     }
 
     try {
       setUploading(true);
 
-      // 1️ Upload file to Firebase Storage
-      const storageRef = ref(storage, `uploads/${Date.now()}-${file.name}`);
+      // 1️Upload file to Firebase Storage
+      const storageRef = ref(storage, `uploads/${user.uid}/${Date.now()}-${file.name}`);
       await uploadBytes(storageRef, file);
 
-      // Get the public URL
+      // 2️ Get the download URL
       const url = await getDownloadURL(storageRef);
       setUploadedUrl(url);
 
-      // 2️ Save document to Firestore
+      // 3️ Save metadata to your backend
       await axios.post(API_URL, {
         title: title,
         body: description,
         imageUrl: url,
-        user_id: author
+        user_id: user.uid,
+        user_email: user.email,
       });
 
       alert("Artwork uploaded successfully!");
       setFile(null);
       setTitle("");
-      setAuthor("");
       setDescription("");
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Upload failed. See console.");
+      alert("Upload failed. Check console for details.");
     } finally {
       setUploading(false);
     }
   };
 
+  if (!user) {
+    return (
+      <div className="max-w-md mx-auto text-center mt-10">
+        <h1 className="text-2xl font-bold mb-4">Upload Artwork</h1>
+        <p className="text-lg mb-6">You must be logged in to upload.</p>
+        <a href="/login" className="btn btn-primary">
+          Go to Login
+        </a>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-lg mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Upload Artwork</h1>
+      <p className="mb-4 text-sm text-gray-400">
+        Logged in as <span className="font-semibold">{user.email}</span>
+      </p>
 
       <input
         type="text"
@@ -62,19 +92,14 @@ function Upload() {
         onChange={(e) => setTitle(e.target.value)}
         className="input input-bordered w-full mb-2"
       />
-      <input
-        type="text"
-        placeholder="Author"
-        value={author}
-        onChange={(e) => setAuthor(e.target.value)}
-        className="input input-bordered w-full mb-2"
-      />
+
       <textarea
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         className="textarea textarea-bordered w-full mb-2 h-24"
       />
+
       <input
         type="file"
         accept="image/*"
@@ -93,7 +118,12 @@ function Upload() {
       {uploadedUrl && (
         <p className="mt-4">
           Uploaded file:{" "}
-          <a href={uploadedUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+          <a
+            href={uploadedUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 underline"
+          >
             View Image
           </a>
         </p>
