@@ -7,6 +7,7 @@ related things. If it is not there none of this will probably work
 import os
 import time
 from trie import Trie
+from bloomfilter import BloomFilter
 
 # flask imports
 from flask import Flask, request, jsonify
@@ -24,6 +25,8 @@ CORS(app)
 
 title_trie = Trie()
 author_trie = Trie()
+title_bloom = BloomFilter()
+author_bloom = BloomFilter()
 
 # firebase setup
 try:
@@ -45,13 +48,12 @@ except Exception as e:
     print(f"ERROR: Could not initialize Firestore Client: {e}")
     db_firestore = None
 
-
-def build_trie_from_db():
+def build_localDSA_from_db():
     if not db_firestore:
         print("Error: Firestore client not available!")
         return
     
-    print("Building Tries from Firestore...")
+    print("Building Tries and Bloom Filters from Firestore...")
     try:
         stories_ref = db_firestore.collection('Stories')
         title_count = 0
@@ -64,18 +66,20 @@ def build_trie_from_db():
             title = story_data.get('Title')
             if title and isinstance(title, str):
                 title_trie.insert(title.lower())
+                title_bloom.add(title.lower())
                 title_count += 1
             
             # 2. Populate Author Trie (using 'Author_ID' field)
             author = story_data.get('Author_ID')
             if author and isinstance(author, str):
                 author_trie.insert(author.lower())
+                author_bloom.add(author.lower())
                 author_count += 1
 
     except Exception as e:
-        print(f"ERROR building Tries from Firestore: {e}")
+        print(f"ERROR building Tries and Bloom Filters from Firestore: {e}")
     
-    print(f"Trie build complete. {title_count} titles, {author_count} authors.")
+    print(f"Tries and Bloom Filters build complete. {title_count} titles, {author_count} authors.")
 
 # verify api is working fine
 @app.route("/")
@@ -167,6 +171,9 @@ def create_story():
     
     if not user_id:
         return jsonify({"Error": "Missing user_id"}), 400
+
+    if title_bloom.lookup(title.lower()):
+        return jsonify({"warning": "A post with this title may already exist!"}), 409
 
     story_data = {
         'Title': title,
@@ -300,7 +307,23 @@ def delete_story(story_id):
     except Exception as e:
         print(f"Error deleting story {story_id}: {e}")
         return jsonify({"error": "Could not delete story"}), 500
+    
+@app.route("/verify_token", methods=["POST"])
+def verify_token():
+    try:
+        token = request.headers.get("Authorization")        # changed from "Autorization"
+        if not token:
+            return jsonify({"error": "No autentication header"}), 401
+        
+        tok = token.split("Bearer")[-1]
+        decoded = auth.verify_id_token(tok)
+        
+        uid = decoded["uid"]
+        
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 401
 
 if __name__ == "__main__":
-    build_trie_from_db()
+    build_localDSA_from_db()
     app.run(debug=True, host="0.0.0.0", port=8080)
