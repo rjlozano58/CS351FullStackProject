@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import '../index.css';
 
 function PostDetails() {
   const { id } = useParams();
@@ -15,6 +16,10 @@ function PostDetails() {
   const [commentAuthor, setCommentAuthor] = useState("");
   const [commentText, setCommentText] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // Preview Image State
+  const [showPreview, setShowPreview] = useState(false);
+
 
   useEffect(() => {
     const fetchPostAndComments = async () => {
@@ -148,16 +153,75 @@ function PostDetails() {
         ← Back to Community Gallery
       </button>
 
-      {/* Post details */}
-      <div className="max-w-4xl mx-auto">
-        <div className="card bg-base-100 shadow-xl">
-          <figure>
-            <img 
-              src={post.imageURL} 
+      {showPreview && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+          <div className="relative max-w-4xl w-full">
+            
+            {/* Close button */}
+            <button
+              onClick={() => setShowPreview(false)}
+              className="btn btn-sm btn-circle absolute right-3 top-3 z-50"
+            >
+              ✕
+            </button>
+
+            {/* Fullscreen image */}
+            <img
+              src={post.imageURL}
               alt={post.title}
-              className="w-full h-96 object-cover"
+              className="mx-auto max-h-[80vh] max-w-[90vw] object-contain rounded-lg"
             />
-          </figure>
+
+            {/* Caption */}
+            <div className="text-center mt-4 text-white animate-fadeIn">
+              <h2 className="text-3xl font-bold">{post.title}</h2>
+              <p className="text-gray-300">By {post.artist}</p>
+              {post.description && (
+                <p className="text-gray-400 mt-3 max-w-3xl mx-auto">
+                  {post.description}
+                </p>
+              )}
+            </div>
+          </div>
+          <dialog id="image_modal" className="modal">
+            <div className="modal-box max-w-3xl p-4">
+              <form method="dialog">
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+              </form>
+
+              <img 
+                src={post.imageURL}
+                alt={post.title}
+                className="mx-auto max-w-[80%] max-h-[70vh] object-contain rounded-lg"
+              />
+
+              <p className="text-center mt-4 text-lg font-semibold">{post.title}</p>
+              <p className="text-center text-sm text-gray-500">By {post.artist}</p>
+            </div>
+          </dialog>
+
+        </div>
+        
+      )}
+
+      {/* Post details */}
+      <div className="max-w-5xl mx-auto">
+        <div className="card bg-base-100 shadow-xl border-1 border-amber-50">
+          
+        <figure className="relative cursor-pointer group" onClick={() => setShowPreview(true)}>
+          <img
+            src={post.imageURL}
+            alt={post.title}
+            className="w-full h-96 object-cover transition duration-300 group-hover:opacity-90"
+          />
+
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="bg-black bg-opacity-50 text-white text-lg font-semibold px-3 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+              Click to Preview
+            </div>
+          </div>
+        </figure>
+
           <div className="card-body">
             <h1 className="card-title text-4xl">{post.title}</h1>
             <p className="text-lg text-gray-600">Created by {post.artist}</p>
@@ -181,38 +245,36 @@ function PostDetails() {
           </h2>
 
           {/* Comment form */}
-          <div className="card bg-base-100 shadow-md mb-6">
+          <div className="card bg-base-100 shadow-md mb-6 border-1 border-amber-50">
             <div className="card-body">
               <h3 className="card-title text-xl">Share Your Thoughts</h3>
               <p className="text-sm text-gray-500 mb-4">
                 Show appreciation or provide constructive feedback to the artist
               </p>
-              <form onSubmit={handleSubmitComment}>
-                <div className="form-control mb-4">
-                  <label className="label">
-                    <span className="label-text">Your Name</span>
-                  </label>
+              <form onSubmit={handleSubmitComment} className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Your Name</label>
                   <input
                     type="text"
                     placeholder="Enter your name"
-                    className="input input-bordered"
+                    className="input input-bordered w-full"
                     value={commentAuthor}
                     onChange={(e) => setCommentAuthor(e.target.value)}
                     required
                   />
                 </div>
-                <div className="form-control mb-4">
-                  <label className="label">
-                    <span className="label-text">Your Feedback</span>
-                  </label>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Your Feedback</label>
                   <textarea
-                    className="textarea textarea-bordered h-24"
+                    className="textarea textarea-bordered w-full h-28"
                     placeholder="What do you think about this artwork?"
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
                     required
                   ></textarea>
                 </div>
+
                 <button 
                   type="submit" 
                   className="btn btn-primary"
@@ -232,7 +294,7 @@ function PostDetails() {
               </p>
             ) : (
               comments.map((comment) => (
-                <div key={comment.id} className="card bg-base-100 shadow-sm">
+                <div key={comment.id} className="card bg-base-100 shadow-sm border-1 border-amber-50">
                   <div className="card-body">
                     <div className="flex justify-between items-start">
                       <div>
