@@ -60,7 +60,17 @@ function Upload() {
       setDescription("");
     } catch (error) {
       console.error("Upload failed:", error);
-      alert("Upload failed. Check console for details.");
+      if (error.response){
+        const statusCode = error.response.status
+        const data = error.response.data
+      
+
+        if (statusCode === 409){
+          alert("Upload failed. A post with this title already exists!");
+        } else{
+          alert("Upload failed. Check console for details.");
+        }
+      }
     } finally {
       setUploading(false);
     }

@@ -156,8 +156,6 @@ def full_search():
 @app.route("/api/stories", methods=['POST'])
 def create_story():
     data = request.json
-    print(data)
-    data = request.json
     title = data.get('title')
     body = data.get('body')
     image_url = data.get('imageUrl')
