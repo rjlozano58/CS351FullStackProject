@@ -2,7 +2,7 @@ progress on search feature title & author tries
 
 Implemented search bar, filter, display
 
-Work on Auth experiments and backend auth logic using firebase 
+Work on failed Auth experiments using self implemented auth and backend auth logic using firebase 
 
 Started frontend Post Details page and related UI components
 
