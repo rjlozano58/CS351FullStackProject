@@ -191,6 +191,8 @@ def create_story():
         title_trie.insert(title.lower())
         author_trie.insert(user_id.lower())
 
+        title_bloom.add(title.lower())
+
         print(f"Story created and added to Trie: {title}")
 
         return jsonify({"status": "success", "id": doc_ref[1].id}), 201 
