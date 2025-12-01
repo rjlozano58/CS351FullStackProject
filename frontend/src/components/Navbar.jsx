@@ -98,6 +98,21 @@ function Navbar() {
             <button className="btn join-item" onClick={handleSearchSubmit}>
               Search
             </button>
+
+            <div className="flex justify-end px-4 pt-1 pb-2">
+            {user ? (
+              <div className="flex items-center gap-2">
+                <span className="text-sm">{user.email}</span>
+                <button className="btn btn-outline btn-error btn-sm" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link to="/login" className="btn btn-primary join-item">
+                Login
+              </Link>
+            )}
+          </div>
           </div>
 
           {suggestions.length > 0 && (
@@ -111,24 +126,11 @@ function Navbar() {
               ))}
             </ul>
           )}
+
+          
         </div>
       </div>
 
-      {/* Bottom Row (Login/Logout) */}
-      <div className="flex justify-end px-4 pb-2">
-        {user ? (
-          <div className="flex items-center gap-2">
-            <span className="text-sm">{user.email}</span>
-            <button className="btn btn-outline btn-error btn-sm" onClick={handleLogout}>
-              Logout
-            </button>
-          </div>
-        ) : (
-          <Link to="/login" className="btn btn-primary btn-sm">
-            Login
-          </Link>
-        )}
-      </div>
     </div>
   );
 }
