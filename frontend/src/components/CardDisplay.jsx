@@ -8,7 +8,7 @@ export function CardDisplay(props) {
   };
 
   return (
-    <div className="card bg-base-100 w-96 shadow-sm">
+    <div className="card bg-base-100 w-96 shadow-sm border-amber-50 border-2">
       <figure>
         <img src={props.imageURL} alt={props.title || "Artwork"} />
       </figure>
