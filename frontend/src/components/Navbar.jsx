@@ -63,60 +63,47 @@ function Navbar() {
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-sm flex flex-col items-stretch">
-      {/* Top Row */}
-      <div className="flex w-full justify-between items-center px-4 py-2">
+    <div className="navbar bg-base-100 shadow-sm">
+      
+      <div className="flex-none">
         <Link to="/" className="btn btn-ghost text-xl">
           Foggy Nights
         </Link>
+      </div>
 
-        <div className="relative">
-          <div className="join">
-            <Link to="/" className="btn join-item">
-              Home
-            </Link>
-            <Link to="/upload" className="btn join-item">
-              Upload
-            </Link>
+      <div className="flex-1 flex justify-center relative">
+        <div className="join">
+          <Link to="/" className="btn join-item">
+            Home
+          </Link>
+          <Link to="/upload" className="btn join-item">
+            Upload
+          </Link>
 
-            <input
-              type="text"
-              placeholder="Search"
-              className="input input-bordered join-item w-40"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onBlur={() => setTimeout(() => setSuggestions([]), 150)}
-            />
-            <select
-              className="select select-bordered join-item"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-            >
-              <option value="title">Title</option>
-              <option value="author">Author</option>
-            </select>
-            <button className="btn join-item" onClick={handleSearchSubmit}>
-              Search
-            </button>
+          <input
+            type="text"
+            placeholder="Search"
+            className="input input-bordered join-item w-96"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onBlur={() => setTimeout(() => setSuggestions([]), 150)}
+          />
+          <select
+            className="select select-bordered join-item w-30"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+          </select>
 
-            <div className="flex justify-end px-4 pt-1 pb-2">
-            {user ? (
-              <div className="flex items-center gap-2">
-                <span className="text-sm">{user.email}</span>
-                <button className="btn btn-outline btn-error btn-sm" onClick={handleLogout}>
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <Link to="/login" className="btn btn-primary join-item">
-                Login
-              </Link>
-            )}
-          </div>
-          </div>
+          <button className="btn btn-info join-item" onClick={handleSearchSubmit}>
+            Search
+          </button>
+        </div>
 
-          {suggestions.length > 0 && (
-            <ul className="absolute z-10 w-40 bg-base-100 shadow-lg rounded-box mt-1 menu p-2">
+        {suggestions.length > 0 && (
+            <ul className="absolute top-12 z-10 w-96 bg-base-100 shadow-lg rounded-box menu p-2">
               {suggestions.map((suggestion, index) => (
                 <li key={index}>
                   <a onMouseDown={() => handleSuggestionClick(suggestion)}>
@@ -126,11 +113,22 @@ function Navbar() {
               ))}
             </ul>
           )}
-
-          
-        </div>
       </div>
 
+      <div className="flex-none">
+        {user ? (
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium mr-2">{user.email}</span>
+            <button className="btn btn-outline btn-error btn-sm" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        ) : (
+          <Link to="/login" className="btn btn-primary">
+            Login
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
